@@ -36,8 +36,8 @@ final class Client extends OAuthClient {
     /**
      * API endpoint constants
      */
-    const ENDPOINT_API_URL = 'http://api.odnoklassniki.ru',
-          ENDPOINT_API_GET = 'http://api.odnoklassniki.ru/fb.do';
+    private $endpoint_api_url = 'https://api.odnoklassniki.ru';
+    private $endpoint_api_get = 'https://api.odnoklassniki.ru/fb.do';
 
     /**
      * API requests types constants
@@ -164,11 +164,11 @@ final class Client extends OAuthClient {
     protected function getMethodRequest($method) {
         switch ($this->getType()) {
             case self::TYPE_URL:
-                $url = self::ENDPOINT_API_URL . '/api/' . str_replace('.', '/', $method);
+                $url =$this->endpoint_api_url . '/api/' . str_replace('.', '/', $method);
                 break;
             case self::TYPE_GET:
             default:
-                $url = self::ENDPOINT_API_GET;
+                $url = $this->endpoint_api_get;
                 break;
         }
         return $this->getRequest($url);
@@ -238,5 +238,21 @@ final class Client extends OAuthClient {
             default:
                 throw new UnknownClientErrorException(sprintf('Unknown response format: %s',  json_encode($Token)));
         }
+    }
+
+    /**
+     * @param string $endpoint_api_url
+     */
+    public function setEndpointApiUrl($endpoint_api_url)
+    {
+        $this->endpoint_api_url = $endpoint_api_url;
+    }
+
+    /**
+     * @param string $endpoint_api_get
+     */
+    public function setEndpointApiGet($endpoint_api_get)
+    {
+        $this->endpoint_api_get = $endpoint_api_get;
     }
 }
